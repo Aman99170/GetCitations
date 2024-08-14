@@ -1,0 +1,88 @@
+/* components/PricingComponent.module.css */
+
+.pricingContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Center vertically on the page */
+  }
+  
+  .pricingCard {
+    width: 220px; /* Consistent card width */
+    height: 400px; /* Consistent card height */
+    padding: 20px;
+    margin: 10px; /* Card margin */
+    border: 1px solid #eaeaea;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Hover effect to enlarge any card */
+  .pricingCard:hover {
+    transform: translateY(-5px) scale(1.1); /* Slightly enlarge the card */
+    background-color: #d4edda; /* Light green background color on hover */
+    border-color: #c3e6cb; /* Light green border color on hover */
+  }
+  
+  .cardTitle {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 5px; /* Decreased margin between card title and price */
+  }
+  
+  .price {
+    font-size: 36px;
+    color: #38924a;
+    margin-bottom: 10px;
+    font-weight: bold; /* Make price text bold */
+  }
+  
+  .price span {
+    font-size: 16px;
+    color: #666;
+    vertical-align: super;
+  }
+  
+  .features {
+    list-style-type: none;
+    padding: 0;
+    text-align: left;
+    margin-bottom: 20px;
+  }
+  
+  .features li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 20px;
+  }
+  
+  .features li .tick {
+    position: absolute;
+    left: 0;
+    top: 5px;
+    width: 10px;
+    height: 10px;
+    background-color: #4CAF50;
+    border-radius: 50%;
+    display: inline-block; /* Ensure span displays correctly */
+  }
+  
+  .chooseButton {
+    background-color: #38924a;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .chooseButton:hover {
+    background-color: #6DC893; /* Updated background color on hover */}
+  
