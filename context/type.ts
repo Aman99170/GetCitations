@@ -4,6 +4,7 @@ export interface IUserInfo{
     lastName:string,
     email:string,
     mobileNumber:string,
+    userType:string,
     createdAt: Date,
     updatedAt: Date,
 }

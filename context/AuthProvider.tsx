@@ -35,7 +35,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const router = useRouter()
     let defaultDate = new Date()
     defaultDate.setDate(defaultDate.getDate() + 3)
-    const [userInfo, setUserInfo] = useState<IUserInfo>({ _id: "", firstName: "", lastName: "", email: "", mobileNumber: "", createdAt: defaultDate, updatedAt: defaultDate })
+    const [userInfo, setUserInfo] = useState<IUserInfo>({ _id: "", firstName: "", lastName: "", email: "", mobileNumber: "", createdAt: defaultDate, updatedAt: defaultDate,userType:"" })
 
     useEffect(() => {
         if (isLoggedIn && isTokenExpired) {
@@ -69,7 +69,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const logOut = useCallback(() => {
         if (typeof window !== 'undefined') {
             localStorage.clear()
-            router.replace("/");
+            router.replace(`/`);
         }
     }, [router])
 

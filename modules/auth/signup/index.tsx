@@ -1,154 +1,180 @@
-'use client'
-import { Button, Stack, TextField, Typography } from "@mui/material";
-import { useForm } from "react-hook-form"
-import Link from "next/link";
-import { yupResolver } from "@hookform/resolvers/yup"
-import * as yup from "yup"
-import {fields,Ifields, IFormField} from "./data"
-import { useCallback } from "react"
-import { useRouter } from "next/navigation";
-import TopBar from "../../navigation/topbar/index";
-import BottomBar from "../../navigation/bottombar/index";
+import { Grid, Box, Typography, Container, Paper } from "@mui/material";
+import {CustomButton} from "../../LandingPageResearcher/Button";
 
-
-
-export function SignUp(){
-
-    const schema = yup.object().shape({
-    firstName: yup.string().required("First Name is required"),
-    lastName: yup.string().required("Last Name is required"),
-    email: yup
-    .string()
-    .required('Email is required')
-    .matches(
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        'invalid email'
-    ),
-    mobileNumber: yup.string().min(10, 'Mobile number too short').max(10, 'Mobile number too long').required(),
-    password: yup.string()
-      .required("Password is required")
-      .min(4, "Password length should be at least 4 characters")
-      .max(12, "Password cannot exceed more than 12 characters"),
-    confirmPassword: yup.string()
-      .required("Confirm Password is required")
-      .min(4, "Password length should be at least 4 characters")
-      .max(12, "Password cannot exceed more than 12 characters")
-      .oneOf([yup.ref("password")], "Passwords do not match")
-
-    })
-
-    const defaultValues:IFormField = {
-        firstName:"",
-        lastName:"",
-        email:"",
-        mobileNumber:"",
-        password:"",
-        confirmPassword:""
-    }
-
-    const router = useRouter()
-
-   const {
-    register,
-    handleSubmit,
-    getValues,
-    watch,
-    formState: { errors },
-    reset,
-    } = useForm<IFormField>({
-        mode:"all",
-        defaultValues:defaultValues,
-        resolver: async (data, context, options) => {
-            return yupResolver(schema)(data, context, options)
-        }
-    });
-
-    const onsubmit = useCallback(async ()=>{
-        try{
-        const payload = {
-            firstName:getValues("firstName"),
-            lastName:getValues("lastName"),
-            email:getValues("email"),
-            mobileNumber:getValues("mobileNumber"),
-            password:getValues("password"),
-            confirmPassword:getValues("confirmPassword")
-        }
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/signup`,{
-            method:'POST',
-            body: JSON.stringify(payload),
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        })
-
-        if(res.status === 200){
-            router.replace("/login")
-        }}
-        catch(err){
-            console.error(err)
-        }
-
-    },[getValues,fetch])
-
-    return(
+export function SignUp() {
+    return (
         <>
-        <Stack direction={"row"} justifyContent={"center"} sx={{
-            backgroundSize: 'cover',
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-            marginBottom:"20px",
-            padding:"40px 0px 30px 0px"
-        }}>
-        <Typography variant="h3" >Create a FREE account</Typography>
-        </Stack>
-        {fields.map((fieldname:Ifields,index:number)=>(
-            <Stack direction={"row"}justifyContent={"center"} sx={{
-                paddingTop:"10px",
-            }} key={index}>
-            <Stack direction={"row"} gap={"10px"}>
-            <Typography sx={{
-                paddingTop:"15px",
-                minWidth:"150px"
-            }}>{fieldname.label}</Typography>
-            <Stack>
-                <TextField 
-                   {...register(fieldname.value as keyof IFormField)}
-                      sx={{
-                      minWidth:"500px"
-                    }}
-                    type={fieldname.type??fieldname.type}
-                />
-                <Typography
-                  color={'red'}
-                  pl={'5px'}
-                >
-                    {errors[fieldname.value as keyof IFormField]
-                     ? `${
-                      errors[fieldname.value as keyof IFormField]
-                          ?.message
-                      }`
-                    : ''}
-                </Typography>
-            </Stack>
-            </Stack>
-            </Stack>
-        ))}
-        
-        <Stack direction={"row"} justifyContent={"center"} gap={"10px"} p={"36px 0px 67px 114px"} >
-        <Button variant="contained" sx={{
-            backgroundColor:"seagreen",
-            color:"white",
-            width:"200px",
-            ":hover":{
-                backgroundColor:"seagreen"
-            }
-        }}
-        onClick={handleSubmit(onsubmit)}
-        >Signup</Button>
-        <Typography pt={"4px"}>Already have an account?</Typography>
-        <Typography pt={"4px"}><Link href={"/login"}>Login</Link></Typography>
-        </Stack>
 
-        </>
-    )
+<Container maxWidth="lg" sx={{ mt: 8 }}>
+      <Typography variant="h3" align="center" gutterBottom>
+        Welcome to GetCitations
+      </Typography>
+      <Typography variant="h6" align="center" color="textSecondary" paragraph>
+        Join our community where researchers and freelancers collaborate to achieve success together. Whether you are looking to advance your research or contribute your skills, the Research Hub is the perfect place for you.
+      </Typography>
+      <Grid container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
+        <Grid item xs={12} md={8}>
+          <Box
+            sx={{
+              p: 4,
+              boxShadow: 3,
+              borderRadius: 2,
+              backgroundColor: '#f5f5f5',
+              textAlign: 'center',
+            }}
+          >
+            <Typography variant="h4" gutterBottom>
+              Get Started with GetCitations
+            </Typography>
+            <Typography variant="body1" paragraph>
+              Create your account and start your journey towards groundbreaking research and collaborative opportunities. Our platform brings together skilled professionals and researchers from across the globe.
+            </Typography>
+          </Box>
+        </Grid>
+      </Grid>
+
+      <Box sx={{ mt: 8 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          Why GetCitations?
+        </Typography>
+        <Grid container spacing={4} sx={{ mt: 4 }}>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 4, textAlign: 'center',height:"170px" }}>
+              <Typography variant="h6" gutterBottom>
+                Global Collaboration
+              </Typography>
+              <Typography variant="body1">
+                Join a community of experts from around the world. Whether you’re sharing research ideas or collaborating on innovative projects, Research Hub makes it easy to connect with global talent.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 4, textAlign: 'center',height:"170px" }}>
+              <Typography variant="h6" gutterBottom>
+                Expand Your Network
+              </Typography>
+              <Typography variant="body1">
+                Network with professionals, academics, and experts across various fields. Build long-lasting partnerships and unlock new opportunities for both research and professional growth.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Paper sx={{ p: 4, textAlign: 'center',height:"170px" }}>
+              <Typography variant="h6" gutterBottom>
+                Streamlined Workflows
+              </Typography>
+              <Typography variant="body1">
+                Our platform is designed to simplify your workflow. Manage your projects, communicate with your team, and track your progress all in one place.
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box sx={{ mt: 8 }}>
+        <Typography variant="h4" align="center" gutterBottom>
+          How It Works
+        </Typography>
+        <Grid container spacing={4} sx={{ mt: 4 }}>
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ p: 4,height:"100px" }}>
+              <Typography variant="h6" gutterBottom>
+                1. Create an Account
+              </Typography>
+              <Typography variant="body1">
+                Sign up for free and create your profile. Whether you are a researcher or a freelancer, it only takes a few minutes to get started.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ p: 4,height:"100px" }}>
+              <Typography variant="h6" gutterBottom>
+                2. Find Your Match
+              </Typography>
+              <Typography variant="body1">
+                Researchers can post projects and find the perfect freelancer for their needs, while freelancers can browse available opportunities and connect with researchers.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ p: 4,height:"100px" }}>
+              <Typography variant="h6" gutterBottom>
+                3. Start Collaborating
+              </Typography>
+              <Typography variant="body1">
+                Once you’ve found a match, start collaborating on exciting projects. Work together to achieve breakthroughs, innovate, and deliver results.
+              </Typography>
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ p: 4,height:"100px" }}>
+              <Typography variant="h6" gutterBottom>
+                4. Deliver and Grow
+              </Typography>
+              <Typography variant="body1">
+                Deliver results, receive feedback, and grow your professional profile. Build your reputation within the research and freelance communities.
+              </Typography>
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
+      <Box sx={{ mt: 8, textAlign: 'center' }}>
+        <Typography variant="h4" gutterBottom>
+          Ready to Join the GetCitations?
+        </Typography>
+        <Typography variant="h6" color="textSecondary" paragraph>
+          Sign up today and start collaborating with researchers and freelancers around the world!
+        </Typography>
+      </Box>
+    </Container>
+                <Grid container spacing={4} justifyContent="center" sx={{ mt: 4,mb:4 }}>
+                    <Grid item xs={12} md={5}>
+                        <Box
+                            sx={{
+                                p: 4,
+                                boxShadow: 3,
+                                borderRadius: 2,
+                                textAlign: 'center',
+                                backgroundColor: '#f5f5f5',
+                                height: "200px"
+                            }}
+                        >
+                            <Typography variant="h5" gutterBottom>
+                                For Researchers
+                            </Typography>
+                            <Typography variant="body1" paragraph pb={"26px"}>
+                                Are you a researcher looking for your paper citations?
+                            </Typography>
+                            <CustomButton
+                                href="/signup-researcher"
+                                text="Sign Up as Researcher"
+                            />
+                        </Box>
+                    </Grid>
+
+                    <Grid item xs={12} md={5}>
+                        <Box
+                            sx={{
+                                p: 4,
+                                boxShadow: 3,
+                                borderRadius: 2,
+                                textAlign: 'center',
+                                backgroundColor: '#f5f5f5',
+                                height: "200px"
+                            }}
+                        >
+                            <Typography variant="h5" gutterBottom>
+                                For Freelancers
+                            </Typography>
+                            <Typography variant="body1" paragraph pb={"26px"}>
+                                Are you a freelancer looking to work on exciting research projects?
+                            </Typography>
+                            <CustomButton
+                                href="/signup-freelancer"
+                                text="Sign Up as Freelancer"
+                            />
+                        </Box>
+                    </Grid>
+                </Grid>
+            </>
+            )
 }

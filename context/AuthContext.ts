@@ -16,7 +16,7 @@ const initialContext: IAuthContext = {
     logOut: () => {},
     isLoggedIn:false,
     loading:true,
-    userInfo:{_id:"",firstName:"",lastName:"",mobileNumber:"",email:"",createdAt:defaultDate,updatedAt:defaultDate},
+    userInfo:{_id:"",firstName:"",lastName:"",mobileNumber:"",email:"",createdAt:defaultDate,updatedAt:defaultDate,userType:""},
     setIsLoggedIn:()=>{},
     setUserInfo:()=>{}
 }

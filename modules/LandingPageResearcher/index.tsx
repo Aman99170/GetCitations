@@ -1,8 +1,8 @@
 'use client'
-import { Stack, Typography, Box, Card, CardContent, CardMedia, Container, Grid, Paper, Rating } from "@mui/material";
+import { Stack, Typography, Box, Card, CardContent, Container, Grid, Paper, Rating } from "@mui/material";
 import Link from "next/link";
 import { useAuthContext } from "../../context/AuthContext";
-import Button from "./Button";
+import {CustomButton} from "./Button";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 interface IUserDetails {
@@ -28,7 +28,7 @@ interface IReview {
   userDetails: IUserDetails;
 }
 
-export function LandingPage() {
+export function LandingPageResearcher() {
   const { isLoggedIn } = useAuthContext();
   const [reviewData, setReviewData] = useState<IReview[]>();
   console.log(process.env.NEXT_PUBLIC_API_URL)
@@ -86,19 +86,11 @@ export function LandingPage() {
           <>
             <br />
 
-            <Button />
+            <CustomButton href="/getstarted" text="Get Started"/>
 
             <br />
           </>
         }
-
-        {isLoggedIn ? (
-          <Box paddingTop={"10px"}>
-            <Link href={"/"} color='black'>Get citations for your research articles.</Link>
-          </Box>
-        ) : (
-          <></>
-        )}
         <Container sx={{ py: 4 }} maxWidth="md">
           <Typography variant="h4" align="center" gutterBottom>
             Our Features
@@ -135,6 +127,61 @@ export function LandingPage() {
               </Paper>
             </Grid>
           </Grid>
+          {isLoggedIn ? (
+          <Box paddingTop={"40px"} paddingLeft={"250px"}>
+            <Link href={"/"} color='black'>Get citations for your research articles.</Link>
+          </Box>
+        ) : (
+        <Grid container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
+         <Grid item xs={12} md={5}>
+          <Box
+            sx={{
+              p: 4,
+              boxShadow: 3,
+              borderRadius: 2,
+              textAlign: 'center',
+              backgroundColor: '#f5f5f5',
+              height:"200px"
+            }}
+          >
+            <Typography variant="h5" gutterBottom>
+              For Researchers
+            </Typography>
+            <Typography variant="body1" paragraph pb={"26px"}>
+              Are you a researcher looking for your paper citations?
+            </Typography>
+            <CustomButton
+              href="/signup-researcher"
+              text="Sign Up as Researcher"
+            />
+          </Box>
+        </Grid>
+
+        <Grid item xs={12} md={5}>
+          <Box
+            sx={{
+              p: 4,
+              boxShadow: 3,
+              borderRadius: 2,
+              textAlign: 'center',
+              backgroundColor: '#f5f5f5',
+              height:"200px"
+            }}
+          >
+            <Typography variant="h5" gutterBottom>
+              For Freelancers
+            </Typography>
+            <Typography variant="body1" paragraph>
+              Are you a freelancer looking to work on exciting research projects?
+            </Typography>
+            <CustomButton
+              href="/signup-freelancer"
+              text="Sign Up as Freelancer"
+            />
+          </Box>
+        </Grid>
+      </Grid>
+        )}
 
           <Typography variant="h4" align="center" gutterBottom sx={{ mt: 5 }}>
             Testimonials
@@ -157,6 +204,7 @@ export function LandingPage() {
             ))}
           </Grid>
         </Container>
+        
       </Stack>
     </Stack>
   );

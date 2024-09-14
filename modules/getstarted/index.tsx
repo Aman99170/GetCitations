@@ -1,51 +1,93 @@
-import { Grid, Box, Typography, Button } from "@mui/material";
+import { Grid, Box, Typography, Button, Stack } from "@mui/material";
 import Link from "next/link";
-import { SignUp } from "../auth/signup";
-
+import { CustomButton } from "../LandingPageResearcher/Button";
 export function GetStarted() {
     return (
         <>
-        <Grid container gap={28} sx={{ fontFamily: 'Roboto, sans-serif' }}>
-            <Grid item xs={5} pl={"20px"}>
-                <Box sx={{ width: '100%', padding: 3 }}>
-                    <Typography variant="h4" component="h2" sx={{ color: 'green', fontWeight: 'bold', marginBottom: 2 }}>
-                        Unlock the Full Potential of Your Research!
-                    </Typography>
-                    <Typography variant="h5" component="h3" sx={{ color: "#00A67E", fontWeight: "bold", marginBottom: 2 }}>
-                        Guaranteed Increase in Citations with GetCitations
-                    </Typography>
-                    <Typography variant="body1" paragraph>
-                        Welcome to GetCitations, your trusted partner in maximizing the impact of your research. 
-                        Our expert team is dedicated to increasing the visibility and citations of your academic papers. 
-                        With GetCitations, your work reaches the right audience, ensuring it gains the recognition it deserves.
-                    </Typography>
-               
-                    <Typography variant="h5" component="h3" sx={{ color: "#00A67E", fontWeight: "bold", marginBottom: 2 }}>
-                        Key Benefits:
-                    </Typography>
-                    <ul style={{ paddingLeft: '20px' }}>
-                        <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Expert promotion across diverse platforms</Typography>
-                        <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Significant Boost in Citations: Experience a noticeable increase in the number of citations your paper receives.</Typography>
-                        <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Expert Promotion: Our team specializes in promoting research articles to the right audience.</Typography>
-                        <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Wide Distribution Network: Your paper is shared across numerous platforms and academic networks.</Typography>
-                        <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Increased Visibility: Gain recognition from peers and researchers worldwide.</Typography>
-                        <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Enhanced Academic Profile: Improve your research impact and academic standing.</Typography>
-                        <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Affordable Plans: Choose from various plans to suit your budget and needs.</Typography>
-                        <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Real-Time Analytics: Track the progress and impact of our promotion efforts.</Typography>
-                    </ul>
-                    <Box sx={{ paddingTop: 2 }}>
-                        <Typography variant="body1">
-                            To know more see <Link href={"/faq"} passHref><Button sx={{ color: 'black', textDecoration: 'underline' }}>How it Works?</Button></Link>
+            <Grid container gap={28} sx={{ fontFamily: 'Roboto, sans-serif' }}>
+                <Grid item xs={5} pl={"20px"}>
+                    <Box sx={{ width: '100%', padding: 3 }}>
+                        <Typography variant="h4" component="h2" sx={{ color: 'green', fontWeight: 'bold', marginBottom: 2 }}>
+                            Unlock the Full Potential of Your Research!
                         </Typography>
+                        <Typography variant="h5" component="h3" sx={{ color: "#00A67E", fontWeight: "bold", marginBottom: 2 }}>
+                            Guaranteed Increase in Citations with GetCitations
+                        </Typography>
+                        <Typography variant="body1" paragraph>
+                            Welcome to GetCitations, your trusted partner in maximizing the impact of your research.
+                            Our expert team is dedicated to increasing the visibility and citations of your academic papers.
+                            With GetCitations, your work reaches the right audience, ensuring it gains the recognition it deserves.
+                        </Typography>
+
+                        <Typography variant="h5" component="h3" sx={{ color: "#00A67E", fontWeight: "bold", marginBottom: 2 }}>
+                            Key Benefits:
+                        </Typography>
+                        <ul style={{ paddingLeft: '20px' }}>
+                            <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Expert promotion across diverse platforms</Typography>
+                            <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Significant Boost in Citations: Experience a noticeable increase in the number of citations your paper receives.</Typography>
+                            <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Expert Promotion: Our team specializes in promoting research articles to the right audience.</Typography>
+                            <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Wide Distribution Network: Your paper is shared across numerous platforms and academic networks.</Typography>
+                            <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Increased Visibility: Gain recognition from peers and researchers worldwide.</Typography>
+                            <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Enhanced Academic Profile: Improve your research impact and academic standing.</Typography>
+                            <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Affordable Plans: Choose from various plans to suit your budget and needs.</Typography>
+                            <Typography component="li" variant="body1" sx={{ marginBottom: 1 }}>Real-Time Analytics: Track the progress and impact of our promotion efforts.</Typography>
+                        </ul>
+                        <Box sx={{ paddingTop: 2 }}>
+                            <Typography variant="body1">
+                                To know more see <Link href={"/faq"} passHref><Button sx={{ color: 'black', textDecoration: 'underline' }}>How it Works?</Button></Link>
+                            </Typography>
+                        </Box>
                     </Box>
-                </Box>
+                </Grid>
+                <Grid item xs={5} >
+                    <Box sx={{ width: '100%', padding: 3 }}>
+                        <Stack spacing={4} justifyContent="center" sx={{ mt: 8,mr:8 }}>
+                            <Box
+                                sx={{
+                                    p: 4,
+                                    boxShadow: 3,
+                                    borderRadius: 2,
+                                    textAlign: 'center',
+                                    backgroundColor: '#f5f5f5',
+                                    height: "200px"
+                                }}
+                            >
+                                <Typography variant="h5" gutterBottom>
+                                    For Researchers
+                                </Typography>
+                                <Typography variant="body1" paragraph pb={"26px"}>
+                                    Are you a researcher looking for your paper citations?
+                                </Typography>
+                                <CustomButton
+                                    href="/signup-researcher"
+                                    text="Sign Up as Researcher"
+                                />
+                            </Box>
+                            <Box
+                                sx={{
+                                    p: 4,
+                                    boxShadow: 3,
+                                    borderRadius: 2,
+                                    textAlign: 'center',
+                                    backgroundColor: '#f5f5f5',
+                                    height: "200px"
+                                }}
+                            >
+                                <Typography variant="h5" gutterBottom>
+                                    For Freelancers
+                                </Typography>
+                                <Typography variant="body1" paragraph>
+                                    Are you a freelancer looking to work on exciting research projects?
+                                </Typography>
+                                <CustomButton
+                                    href="/signup-freelancer"
+                                    text="Sign Up as Freelancer"
+                                />
+                            </Box>
+                        </Stack>
+                    </Box>
+                </Grid>
             </Grid>
-            <Grid item xs={4}>
-                <Box sx={{ width: '100%', padding: 3 }}>
-                    <SignUp />
-                </Box>
-            </Grid>
-        </Grid>
         </>
     )
 }

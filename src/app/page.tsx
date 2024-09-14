@@ -1,10 +1,17 @@
 'use client'
+import { useSearchParams } from 'next/navigation';
 import { AuthProvider } from '../../context/AuthProvider';
-import { LandingPage } from '../../modules/LandingPage';
+import { LandingPageResearcher } from '../../modules/LandingPageResearcher';
+import { LandingPageFreelancer } from '../../modules/LandingPageFreelancer';
 export default function Home() {
+
+
+  const searchParams = useSearchParams()
+  const userType = searchParams.get('userType')
+
   return (
     <AuthProvider>
-      <LandingPage/>
+      {userType==="Freelancer" ? <LandingPageFreelancer/> :<LandingPageResearcher/> }
     </AuthProvider>
   )
 }

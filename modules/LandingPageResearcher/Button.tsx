@@ -25,22 +25,21 @@ const buttonStyle = {
   fontFamily: 'Arial, sans-serif',
   outline: 'none',
   textDecoration: 'none',
-  width: '15%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
 };
 
-export default function Button() {
+export function CustomButton({href,text}:{href:string,text:String}) {
   return (
     <motion.a
-      href="/getstarted"
+      href={href}
       style={buttonStyle}
       variants={buttonVariants}
       initial="normal"
       whileHover="hover"
     >
-      Get Started
+      {text}
     </motion.a>
   );
 }
