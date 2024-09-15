@@ -59,6 +59,7 @@ export function LoginUser({userType}:{userType:String}){
             const expirationTime = Date.now() + 3600 * 1000;
             localStorage.setItem("user",JSON.stringify(res))
             localStorage.setItem('tokenExpiration', expirationTime.toString());
+            localStorage.setItem("userType",userType.toString()),
             router.push(`/?userType=${userType}`)
         }
         else{

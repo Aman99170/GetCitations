@@ -11,10 +11,13 @@ export function AuthProvider({ children }: PropsWithChildren) {
     const [storage, setStorage] = useState<String | null>(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [userType,setUserType] = useState<String | null>();
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const user = localStorage.getItem('user');
+            const userType = localStorage.getItem('userType');
+            setUserType(userType);
             setStorage(user);
             setIsLoggedIn(!!user);
             setLoading(false); // Set isLoggedIn based on user presence in localStorage
@@ -48,10 +51,11 @@ export function AuthProvider({ children }: PropsWithChildren) {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/getUser`, {
+                const BASE_URL = userType==="Researcher" ? process.env.NEXT_PUBLIC_API_URL : process.env.NEXT_PUBLIC_API_URL_FREELANCER
+                let res = await fetch(`${BASE_URL}/getUser`, {
                     method: 'POST',
                     headers: {
-                        Authorization: `${storage}`,
+                        Authorization: userType==="Researcher" ? `${storage}` : `Bearer ${storage}`
                     },
                 })
                 if (res.status === 200) {
