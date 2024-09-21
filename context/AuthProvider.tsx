@@ -39,7 +39,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     let defaultDate = new Date()
     defaultDate.setDate(defaultDate.getDate() + 3)
     const [userInfo, setUserInfo] = useState<IUserInfo>({ _id: "", firstName: "", lastName: "", email: "", mobileNumber: "", createdAt: defaultDate, updatedAt: defaultDate,userType:"" })
-
+    console.log(userInfo)
     useEffect(() => {
         if (isLoggedIn && isTokenExpired) {
             setIsLoggedIn(false)
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
                 let res = await fetch(`${BASE_URL}/getUser`, {
                     method: 'POST',
                     headers: {
-                        Authorization: userType==="Researcher" ? `${storage}` : `Bearer ${storage}`
+                        Authorization: userType==="Researcher" ? `${storage}` : `Bearer ${storage}`,
                     },
                 })
                 if (res.status === 200) {

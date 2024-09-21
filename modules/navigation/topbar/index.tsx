@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { AppBar, Stack, Toolbar, IconButton, Avatar, Button } from "@mui/material";
 import { useAuthContext } from "../../../context/AuthContext";
 import { useCallback, useRef, useState } from "react";
@@ -11,6 +11,15 @@ export default function TopBar() {
   const [open, setOpen] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
   const anchorRef = useRef<HTMLButtonElement>(null);
+  console.log(isLoggedIn)
+  const [userType, setUserType] = useState<String | null>();
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const userType = localStorage.getItem('userType');
+      setUserType(userType);
+    }
+  }, []);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
@@ -108,17 +117,31 @@ export default function TopBar() {
               variant='text'
               href='/faq'
             >Help</Button>
-            <Button sx={{
-              color: "black",
-              fontWeight: "bold",
-              textTransform: "none",
-              "&:hover": {
-                color: "#4CAF50",
-              },
-            }}
-              variant='text'
-              href='/pricing'
-            >Pricing</Button>
+            {isLoggedIn && userType === "Researcher" ?
+              <Button sx={{
+                color: "black",
+                fontWeight: "bold",
+                textTransform: "none",
+                "&:hover": {
+                  color: "#4CAF50",
+                },
+              }}
+                variant='text'
+                href='/pricing'
+              >Pricing</Button>
+              : isLoggedIn && userType === "Freelancer" ?
+                <Button sx={{
+                  color: "black",
+                  fontWeight: "bold",
+                  textTransform: "none",
+                  "&:hover": {
+                    color: "#4CAF50",
+                  },
+                }}
+                  variant='text'
+                  href='/researchPapers'
+                >Research Papers</Button>:<></>
+          }
             {!isLoggedIn ?
               <>
                 <CustomButton href='/sign-up'>Sign-up</CustomButton>

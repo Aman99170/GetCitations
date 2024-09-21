@@ -4,16 +4,11 @@ import Link from "next/link";
 import { useAuthContext } from "../../context/AuthContext";
 import {CustomButton} from "./Button";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
 
 interface IUserDetails {
-  _id: string;
   firstName: string;
   lastName: string;
-  email: string;
-  mobileNumber: number;
-  password: string;
-  createdAt: string;
-  updatedAt: string;
   __v: number;
 }
 
@@ -29,9 +24,10 @@ interface IReview {
 }
 
 export function LandingPageResearcher() {
-  const { isLoggedIn } = useAuthContext();
+  const { isLoggedIn,userInfo } = useAuthContext();
   const [reviewData, setReviewData] = useState<IReview[]>();
-  console.log(process.env.NEXT_PUBLIC_API_URL)
+  const searchParams = useSearchParams()
+  const userType = searchParams.get('userType')
   const storage = useMemo(() => {
     if (typeof window !== 'undefined')
       return (
@@ -42,15 +38,19 @@ export function LandingPageResearcher() {
 
   const fetchReview = useCallback(async () => {
     let res
+    const BASE_URL = userType==="Researcher"?process.env.NEXT_PUBLIC_API_URL:process.env.NEXT_PUBLIC_API_URL_FREELANCER
+    console.log(userType)
+    console.log(userInfo)
     try {
       {
         isLoggedIn ?
-          res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/fetchReviewWithUserDetails`, {
+          res = await fetch(`${BASE_URL}/fetchReviewWithUserDetails/${userInfo._id}`, {
             method: 'GET',
             headers: {
-              Authorization: `${storage}`,
+              Authorization: userType==="Researcher" ? `${storage}` : `Bearer ${storage}`,
               'Content-Type': 'application/json',
-            }
+            },
+            
           })
         :
         res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/fetchPublicReviewWithUserDetails`, {
@@ -66,11 +66,11 @@ export function LandingPageResearcher() {
       }catch (err) {
         console.error(err)
       }
-    }, [])
+    }, [isLoggedIn,userInfo])
 
   useEffect(() => {
     fetchReview()
-  }, [])
+  }, [userInfo,isLoggedIn])
 
   return (
     <Stack direction={"row"} justifyContent={"center"} alignItems={"center"}>
@@ -127,11 +127,11 @@ export function LandingPageResearcher() {
               </Paper>
             </Grid>
           </Grid>
-          {isLoggedIn ? (
+          {isLoggedIn && userType==="Researcher"? (
           <Box paddingTop={"40px"} paddingLeft={"250px"}>
             <Link href={"/"} color='black'>Get citations for your research articles.</Link>
           </Box>
-        ) : (
+        ) : !isLoggedIn ? (
         <Grid container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
          <Grid item xs={12} md={5}>
           <Box
@@ -181,7 +181,7 @@ export function LandingPageResearcher() {
           </Box>
         </Grid>
       </Grid>
-        )}
+        ) : <></>}
 
           <Typography variant="h4" align="center" gutterBottom sx={{ mt: 5 }}>
             Testimonials
@@ -192,7 +192,7 @@ export function LandingPageResearcher() {
                 <Card sx={{ display: 'flex', flexDirection: 'column', height: "220px" }}>
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {review && review?.userDetails.firstName} {review && review.userDetails.lastName}
+                      {review && review?.userDetails?.firstName} {review && review?.userDetails?.lastName}
                     </Typography>
                     <Rating name="read-only" value={review.ratingValue} readOnly />
                     <Typography>
