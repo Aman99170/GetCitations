@@ -6,8 +6,8 @@ import { useMyOrders } from "../../../modules/myOrders/useMyOrders";
 interface IEditOrder {
     open: boolean,
     handleClose: () => void
-    order: IOrder
-    reFetch: (filters?: {}) => Promise<void>
+    order?: IOrder
+    reFetch?: (filters?: {}) => Promise<void>
 }
 
 export interface IformData{
@@ -18,9 +18,9 @@ export interface IformData{
 
 export function EditOrder({ open, handleClose, order,reFetch }: IEditOrder) {
     const [formData, setFormData] = useState<IformData>({
-        paperName: order.paperName,
-        paperLink: order.paperLink,
-        paperDoi: order.paperDoi
+        paperName: order?order.paperName:"",
+        paperLink: order?order.paperLink:"",
+        paperDoi: order?order.paperDoi:""
     });
 
     const handleChange = (e: any) => {
@@ -38,8 +38,8 @@ export function EditOrder({ open, handleClose, order,reFetch }: IEditOrder) {
     },[])
 
     const handleEditButton = useCallback(()=>{
-        updateOrders(order._id,formData,handleClose)
-        setTimeout(reFetch,1000)
+        updateOrders(order?order._id:"",formData,handleClose)
+        setTimeout(reFetch?reFetch:"",1000)
     },[order,formData])
 
     return (

@@ -39,8 +39,6 @@ export function LandingPageResearcher() {
   const fetchReview = useCallback(async () => {
     let res
     const BASE_URL = userType==="Researcher"?process.env.NEXT_PUBLIC_API_URL:process.env.NEXT_PUBLIC_API_URL_FREELANCER
-    console.log(userType)
-    console.log(userInfo)
     try {
       {
         isLoggedIn ?

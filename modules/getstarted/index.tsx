@@ -4,7 +4,7 @@ import { CustomButton } from "../LandingPageResearcher/Button";
 export function GetStarted() {
     return (
         <>
-            <Grid container gap={28} sx={{ fontFamily: 'Roboto, sans-serif' }}>
+            <Grid container gap={25} sx={{ fontFamily: 'Roboto, sans-serif' }}>
                 <Grid item xs={5} pl={"20px"}>
                     <Box sx={{ width: '100%', padding: 3 }}>
                         <Typography variant="h4" component="h2" sx={{ color: 'green', fontWeight: 'bold', marginBottom: 2 }}>

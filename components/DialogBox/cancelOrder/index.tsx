@@ -6,8 +6,8 @@ import { IOrder } from "../../../modules/myOrders/type";
 interface ICancelOrder{
     handleClose: () => void
     open:boolean
-    order: IOrder
-    reFetch: (filters?: {}) => Promise<void>
+    order?: IOrder
+    reFetch?: (filters?: {}) => Promise<void>
 }
 
 export function CancelOrder({open,handleClose,reFetch,order}:ICancelOrder){
@@ -19,8 +19,8 @@ export function CancelOrder({open,handleClose,reFetch,order}:ICancelOrder){
     },[])
 
     const handleCancelOrder = useCallback(()=>{
-        deleteOrder(order._id,handleClose)
-        setTimeout(reFetch,1000)
+        deleteOrder(order?order._id:"",handleClose)
+        setTimeout(reFetch?reFetch:"",1000)
     },[order])
 
     return(

@@ -1,4 +1,4 @@
-interface IUserDetails {
+export interface IUserDetails {
     _id: number;
     email: string;
     firstName: string;

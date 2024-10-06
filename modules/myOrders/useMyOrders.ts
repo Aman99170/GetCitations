@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
-import { IOrder } from "./type";
+import { IBidDetails, IOrder } from "./type";
 import { IformData } from "../../components/DialogBox/editOrder";
+import { useAuthContext } from "../../context/AuthContext";
 
 export const useMyOrders = ()=>{
     const storage = useMemo(() => {
@@ -11,29 +12,38 @@ export const useMyOrders = ()=>{
         return null
     }, [])
     const [orders, setOrders] = useState<IOrder[]>()
+    const [bids,setBids] = useState<IBidDetails[]>()
+    const {userInfo} = useAuthContext()
+
+    const getBids = useCallback(async(filters={})=>{
+        try{
+            const queryParams = new URLSearchParams(filters)
+                const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL_FREELANCER}/fetchAllBids/${userInfo._id}?${queryParams}`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${storage}`,
+                        'Content-Type': 'application/json',
+                    }
+                })
+            if(resp.status===200){
+                setBids(await resp.json())
+            }
+        }catch (error) {
+            console.error(error)
+        }
+    },[userInfo])
 
     const getMyOrders = useCallback(async (filters={}) => {
         try {
             const queryParams = new URLSearchParams(filters)
-            let res = null;
-            if (queryParams !== null) {
-                res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/myOrders?${queryParams}`, {
+            const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/myOrders?${queryParams}`, {
                     method: 'GET',
                     headers: {
                         Authorization: `${storage}`,
                         'Content-Type': 'application/json',
                     }
                 })
-            }
-            else {
-                res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/myOrders`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `${storage}`,
-                        'Content-Type': 'application/json',
-                    }
-                })
-            }
+
             if (res.status === 200) {
                 setOrders(await res.json())
             }
@@ -77,6 +87,9 @@ export const useMyOrders = ()=>{
 
     return{
         orders,
+        bids,
+        setBids,
+        getBids,
         setOrders,
         getMyOrders,
         updateOrders,

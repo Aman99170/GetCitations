@@ -1,11 +1,14 @@
 'use client'
 import { Paper, Stack, Table, TableBody, TableContainer, TableHead, TablePagination, TableRow, Typography, styled, tableCellClasses, TableCell, TextField, IconButton } from "@mui/material";
-import { ChangeEvent, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import { FilterModal } from "../../components/DialogBox/filterModal";
 import { useMyOrders } from './useMyOrders'
 import { SearchBox } from "../../components/searchBox";
 import { OrderDetails } from "../../components/orderDetails";
+import { freelancerColumnHeaders, researchersColumnHeaders } from "./type";
+import { SearchBoxFreelancer } from "../../components/searchBoxFreelancer";
+import { OrderDetailsFreelancer } from "../../components/orderDetailsFreelancer";
 
 
 export function MyOrders() {
@@ -13,7 +16,22 @@ export function MyOrders() {
     const [rowsPerPage, setRowsPerPage] = useState<number>(5)
     const [page, setPage] = useState<number>(0)
     const [filterModalOpen, setFilterModalOpen] = useState<boolean>(false)
-    const { orders, getMyOrders } = useMyOrders()
+    const { orders, getMyOrders, bids, getBids } = useMyOrders()
+    const [userType, setUserType] = useState<String | null>()
+    const [TableCells, setTableCells] = useState<String[]>([])
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const userType = localStorage.getItem('userType');
+            setUserType(userType);
+        }
+    }, []);
+
+    useEffect(() => {
+        userType === "Researcher" ? setTableCells(researchersColumnHeaders) : setTableCells(freelancerColumnHeaders)
+    }, [userType]);
+
+
 
     const handleChangePage = ((e: any, newPage: number) => {
         setPage(newPage)
@@ -31,6 +49,15 @@ export function MyOrders() {
                 page * rowsPerPage + rowsPerPage,
             ),
         [page, rowsPerPage, orders],
+    );
+
+    const visibleRowsFreelancer = useMemo(
+        () =>
+            bids?.slice(
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage,
+            ),
+        [page, rowsPerPage, bids],
     );
 
     const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -51,13 +78,19 @@ export function MyOrders() {
                 backgroundPosition: 'center',
                 padding: "40px 0px 30px 0px"
             }}>
-                <Typography variant="h3" textAlign={"center"} >My Orders</Typography>
+                <Typography variant="h3" textAlign={"center"} >{userType==="Researcher"?"My Orders":"My Bids"}</Typography>
             </Stack>
             <Stack direction={"row"} justifyContent={"end"} gap={"10px"} sx={{
                 paddingRight: "60px",
                 paddingBottom: "20px"
             }}>
-                <SearchBox fetchData={getMyOrders} setPage={setPage} />
+                {userType === "Researcher" ?
+                    <SearchBox fetchData={getMyOrders} setPage={setPage} /> :
+                    userType === "Freelancer" ?
+                        <SearchBoxFreelancer fetchData={getBids} setPage={setPage} />
+                        : <></>
+                }
+
                 <IconButton onClick={() => setFilterModalOpen(true)}>
                     <FilterListIcon sx={{
                         fontSize: "40px"
@@ -65,55 +98,68 @@ export function MyOrders() {
             </Stack>
             <TableContainer component={Paper} sx={{
                 minHeight: "490px",
-                width:"1400px",
-                marginLeft:"50px",
-                borderRadius:"10px"
+                width: "1400px",
+                marginLeft: "50px",
+                borderRadius: "10px"
             }}>
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell>Order Number</StyledTableCell>
-                            <StyledTableCell>Order Date</StyledTableCell>
-                            <StyledTableCell>Order Status</StyledTableCell>
-                            <StyledTableCell>Paper Name</StyledTableCell>
-                            <StyledTableCell>Paper Link</StyledTableCell>
-                            <StyledTableCell>Paper Doi</StyledTableCell>
-                            <StyledTableCell>Number of Citations</StyledTableCell>
-                            <StyledTableCell>Total Amount</StyledTableCell>
-                            <StyledTableCell>Transaction Status</StyledTableCell>
+                            <StyledTableCell>{TableCells[0]}</StyledTableCell>
+                            <StyledTableCell>{TableCells[1]}</StyledTableCell>
+                            <StyledTableCell>{TableCells[2]}</StyledTableCell>
+                            <StyledTableCell>{TableCells[3]}</StyledTableCell>
+                            <StyledTableCell>{TableCells[4]}</StyledTableCell>
+                            <StyledTableCell>{TableCells[5]}</StyledTableCell>
+                            <StyledTableCell>{TableCells[6]}</StyledTableCell>
+                            <StyledTableCell>{TableCells[7]}</StyledTableCell>
+                            <StyledTableCell>{TableCells[8]}</StyledTableCell>
                             <StyledTableCell />
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                    {visibleRows && visibleRows?.length > 0 ? visibleRows?.map((order, index) => {
-                        return (
-                                <OrderDetails order={order} key={index} reFetch={getMyOrders}/>
-                        )
-                    }) :
-                        <Typography variant="h3" sx={{
-                            position: "absolute",
-                            top: "66%",
-                            left: "39%"
-                        }}>No Record Found</Typography>
-                    }
-                        </TableBody>
+                        {userType === "Researcher" && visibleRows && visibleRows?.length > 0 ? visibleRows?.map((order, index) => {
+                            return (
+                                <OrderDetails order={order} key={index} reFetch={getMyOrders} />
+                            )
+                        }) : userType === "Researcher" ?
+                            <Typography variant="h3" sx={{
+                                position: "absolute",
+                                top: "66%",
+                                left: "39%"
+                            }}>No Record Found</Typography>
+                            : <></>
+                        }
+                        {userType === "Freelancer" && visibleRowsFreelancer && visibleRowsFreelancer?.length > 0 ? visibleRowsFreelancer?.map((bid, index) => {
+                            return (
+                                <OrderDetailsFreelancer bid={bid} key={index} reFetch={getBids} />
+                            )
+                        }) : userType === "Freelancer" ?
+                            <Typography variant="h3" sx={{
+                                position: "absolute",
+                                top: "66%",
+                                left: "39%"
+                            }}>No Record Found</Typography>
+                            : <></>
+                        }
+                    </TableBody>
                 </Table>
             </TableContainer>
             <TablePagination
                 rowsPerPageOptions={[5, 10, 20]}
                 component="div"
-                count={orders?.length ? orders.length : 0}
+                count={orders?.length ? orders.length : bids?.length?bids?.length:0}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
                 sx={{
-                    width:"1400px",
-                    marginLeft:"50px"
+                    width: "1400px",
+                    marginLeft: "50px"
                 }}
             >
             </TablePagination>
-            {filterModalOpen && <FilterModal open={filterModalOpen} handleClose={() => setFilterModalOpen(false)} reFetch={getMyOrders} setPage={setPage}/>}
+            {filterModalOpen && <FilterModal open={filterModalOpen} handleClose={() => setFilterModalOpen(false)} reFetch={getMyOrders} setPage={setPage} />}
         </>
     )
 }

@@ -8,7 +8,7 @@ interface IRateExpDialog {
     open: boolean
     setButtonText: Dispatch<SetStateAction<String>>
     buttonText: String
-    orderId: string
+    orderId?: string
 }
 
 
@@ -17,14 +17,14 @@ export function RateExpDialog({ open, handleClose, setButtonText, buttonText, or
 
     const handleSubmitButton = useCallback(async () => {
         if (buttonText === "Rate your experience") {
-            const resp = handleSubmit(orderId)
+            const resp = handleSubmit(orderId?orderId:"")
             if (await resp) {
                 setButtonText("Edit Review")
                 handleClose()
             }
         }
         else if(buttonText==="Edit Review"){
-            const resp = editReview(orderId,ratingData)
+            const resp = editReview(orderId?orderId:"",ratingData)
             if (await resp) {
                 handleClose()
             }
@@ -33,7 +33,7 @@ export function RateExpDialog({ open, handleClose, setButtonText, buttonText, or
 
     useEffect(() => {
         if (buttonText === "Edit Review")
-            alreadyReviewGiven(orderId)
+            alreadyReviewGiven(orderId?orderId:"")
     }, [])
 
     return (

@@ -8,8 +8,14 @@ import Link from "next/link";
 import { RateExpDialog } from "../DialogBox/rateYourExp";
 import { useRateYourExp } from "../DialogBox/rateYourExp/useRateYourExp";
 
+interface IOrderDetails{
+    order?:IOrder
+    reFetch?: (filters?: {}) => Promise<void> 
 
-export function OrderDetails({ order, reFetch }: { order: IOrder, reFetch: (filters?: {}) => Promise<void> }) {
+}
+
+
+export function OrderDetails({ order, reFetch }: IOrderDetails) {
     const [editModalOpen, setEditModalOpen] = useState<boolean>(false)
     const [cancelModalOpen, setCancelModalOpen] = useState<boolean>(false)
     const [cancelDateExceedModalOpen, setCancelDateExceedModalOpen] = useState<boolean>(false)
@@ -40,7 +46,7 @@ export function OrderDetails({ order, reFetch }: { order: IOrder, reFetch: (filt
     }, []);
 
     const CancelOrderOpen = useCallback(() => {
-        let orderedDate = convertDateFormat1(order.orderedAt)
+        let orderedDate = convertDateFormat1(order ? order?.orderedAt : new Date())
         const today = convertDateFormat1(new Date())
         const orderDate1 = new Date(orderedDate)
         const todayDate = new Date(today)
@@ -87,15 +93,15 @@ export function OrderDetails({ order, reFetch }: { order: IOrder, reFetch: (filt
     }));
 
     const checkIfReviewAlreadyGiven = useCallback(async () => {
-        const resp = alreadyReviewGiven(order._id)
+        const resp = alreadyReviewGiven(order ?order?._id:"")
         if (await resp) {
             setButtonText("Edit Review")
         }
-    }, [order._id])
+    }, [order?._id])
 
     useEffect(() => {
         checkIfReviewAlreadyGiven()
-    }, [order._id])
+    }, [order?._id])
 
     // const kebabOption = [
     //     {
@@ -116,21 +122,21 @@ export function OrderDetails({ order, reFetch }: { order: IOrder, reFetch: (filt
     return (
         <>
             <StyledTableRow>
-                <StyledTableCell sx={{ maxWidth: "150px", wordWrap: "break-word" }}>{order.orderNumber}</StyledTableCell>
-                <StyledTableCell>{convertDateFormat(order.orderedAt)}</StyledTableCell>
+                <StyledTableCell sx={{ maxWidth: "150px", wordWrap: "break-word" }}>{order ?order.orderNumber :""}</StyledTableCell>
+                <StyledTableCell>{convertDateFormat(order ?order?.orderedAt :new Date())}</StyledTableCell>
                 <StyledTableCell sx={{
-                    color: order.orderStatus === "Success" ? "green" : "red"
-                }}>{order.orderStatus}</StyledTableCell>
-                <StyledTableCell sx={{ maxWidth: "180px", wordWrap: "break-word" }} >{order.paperName}</StyledTableCell>
-                <StyledTableCell sx={{ maxWidth: "180px", wordWrap: "break-word" }} ><Link href={encodeURI(order.paperLink.toString())} rel="noopener noreferrer" target="_blank">{order.paperLink}</Link></StyledTableCell>
-                <StyledTableCell sx={{ maxWidth: "175px", wordWrap: "break-word" }} >{order.paperDoi}</StyledTableCell>
-                <StyledTableCell align="center">{String(order.numofCitation)}</StyledTableCell>
-                <StyledTableCell align="center">{String(order.amount)}$</StyledTableCell>
+                    color: order?.orderStatus === "Success" ? "green" : "red"
+                }}>{order?order.orderStatus:""}</StyledTableCell>
+                <StyledTableCell sx={{ maxWidth: "180px", wordWrap: "break-word" }} >{order?order.paperName:""}</StyledTableCell>
+                <StyledTableCell sx={{ maxWidth: "180px", wordWrap: "break-word" }} ><Link href={encodeURI(order?order.paperLink.toString():"")} rel="noopener noreferrer" target="_blank">{order?order.paperLink:""}</Link></StyledTableCell>
+                <StyledTableCell sx={{ maxWidth: "175px", wordWrap: "break-word" }} >{order?order.paperDoi:""}</StyledTableCell>
+                <StyledTableCell align="center">{String(order?order.numofCitation:"")}</StyledTableCell>
+                <StyledTableCell align="center">{String(order?order.amount:"")}$</StyledTableCell>
                 <StyledTableCell align="center" sx={{
-                    color: order.transactionStatus === "Successful" ? "green" : "red"
-                }}>{order.transactionStatus}</StyledTableCell>
+                    color: order?.transactionStatus === "Successful" ? "green" : "red"
+                }}>{order?order.transactionStatus:""}</StyledTableCell>
                 <StyledTableCell>
-                    {order.orderStatus !== "Success" ?
+                    {order?.orderStatus !== "Success" ?
                         <Stack gap={"10px"}>
                             <Button variant="outlined" sx={{
                                 textTransform: "none",
@@ -163,7 +169,7 @@ export function OrderDetails({ order, reFetch }: { order: IOrder, reFetch: (filt
             {editModalOpen && <EditOrder open={editModalOpen} handleClose={() => setEditModalOpen(false)} order={order} reFetch={reFetch} />}
             {cancelModalOpen && <CancelOrder open={cancelModalOpen} handleClose={() => setCancelModalOpen(false)} order={order} reFetch={reFetch} />}
             {cancelDateExceedModalOpen && <CancelDateExceed open={cancelDateExceedModalOpen} handleClose={() => setCancelDateExceedModalOpen(false)} />}
-            {openRateYourExp && <RateExpDialog open={openRateYourExp} handleClose={() => setOpenRateYourExp(false)} setButtonText={setButtonText} buttonText={buttonText} orderId={order._id} />}
+            {openRateYourExp && <RateExpDialog open={openRateYourExp} handleClose={() => setOpenRateYourExp(false)} setButtonText={setButtonText} buttonText={buttonText} orderId={order?._id} />}
         </>
     )
 }
