@@ -14,26 +14,21 @@ export interface IOrder{
     transactionStatus:String
 }
 
-
-interface IBidOrder {
-    bidId: number;
-    paperId: string;
-    paperName: string;
-    paperLink: string;
-    paperDoi: string;
-    postedBy: string;
-    numberOfCitation: number;
-    postedOn: string;
-    bidBy: IUserDetails;
-    bidAt: string;
-    bidEndDate: string;
-    bidStartDate: string;
-    bidAmount: number;
-  }
-
  export interface IBidDetails {
-    rpBidModel: IBidOrder;
-    bidStatus: string;
+  bidId: number;
+  paperId: string;
+  paperName: string;
+  paperLink: string;
+  paperDoi: string;
+  postedBy: string;
+  numberOfCitation: number;
+  postedOn: string;
+  bidBy: number;
+  bidAt: string;
+  bidEndDate: string;
+  bidStartDate: string;
+  bidAmount: number;
+  bidStatus: string;
   }
 
 

@@ -3,7 +3,7 @@ import { Avatar, Button, Grid, Input, Stack, TextField, Typography } from "@mui/
 import { profiledata } from "./data";
 import { IProfileData, IUserInfo } from "./type";
 import { useAuthContext } from "../../context/AuthContext";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export function ProfilePage() {
     const { userInfo } = useAuthContext()
@@ -12,17 +12,36 @@ export function ProfilePage() {
     const [newPassword,setNewPassword] = useState<String>("")
     const [confirmPassword,setConfirmPassword] = useState<String>("")
     const [error,setError] = useState<String>("")
+    const [userType,setUserType] = useState<String | null>();
     const [editedUserDetails, setEditedUserDetails] = useState<IUserInfo>({ firstName: "", lastName: "", email: "", mobileNumber: "" })
+
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const userType = localStorage.getItem('userType');
+            setUserType(userType);
+        }
+    }, []);
+    const storage = useMemo(() => {
+        if (typeof window !== 'undefined')
+          return (
+            localStorage.getItem('user')
+          )
+        return null
+      }, [])
+
     const handleEditButton = () => {
         setIsEditable(true)
     }
     const handleSaveButton = useCallback(async() => {
+        const BASE_URL = userType==="Researcher" ? process.env.NEXT_PUBLIC_API_URL : process.env.NEXT_PUBLIC_API_URL_FREELANCER
         try{
-            let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/updateUserDetails/${userInfo._id}`,{
+            let res = await fetch(`${BASE_URL}/updateUserDetails/${userInfo._id}`,{
                 method:'PUT',
                 body: JSON.stringify(editedUserDetails),
                 headers: {
+                    Authorization: userType==="Researcher" ? `${storage}` : `Bearer ${storage}`,
                     'Content-Type': 'application/json',
+                    
                 },
             })
             if(res.status===200){
@@ -31,23 +50,25 @@ export function ProfilePage() {
         }catch(error){
             console.error(error)
         }
-    },[editedUserDetails])
+    },[editedUserDetails,userType])
 
     const handleChangePassword = useCallback(async()=>{
         if(newPassword!==confirmPassword){
             setError("Your new password and confirm password do not match")
         }else{
             setError("")
-        }
+        const BASE_URL = userType==="Researcher" ? process.env.NEXT_PUBLIC_API_URL : process.env.NEXT_PUBLIC_API_URL_FREELANCER
         try{
             const payload= {
                 oldPassword,newPassword
             }
-            let res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/updateUserPassword/${userInfo._id}`,{
+            let res = await fetch(`${BASE_URL}/updateUserPassword/${userInfo._id}`,{
                 method:'PATCH',
                 body: JSON.stringify(payload),
                 headers: {
+                    Authorization: userType==="Researcher" ? `${storage}` : `Bearer ${storage}`,
                     'Content-Type': 'application/json',
+                    
                 },
             })
             const data = await res.json()
@@ -60,7 +81,8 @@ export function ProfilePage() {
         }catch(error){
             console.error(error)
         }
-    },[newPassword,confirmPassword,oldPassword])
+    }
+    },[newPassword,confirmPassword,oldPassword,userType])
 
     const handleChange = (e: any) => {
         const { name, value } = e.target;
@@ -77,12 +99,12 @@ export function ProfilePage() {
     return (
         <>
             <Stack sx={{
-                padding: "40px 0px 30px 0px",
+                padding: "81px 0px 30px 0px",
             }}>
                 <Typography variant="h3" textAlign={"center"} >Manage your profile</Typography>
             </Stack>
             <Grid container sx={{
-                padding: "40px 40px 30px 40px"
+                padding: "40px 40px 110px 40px"
             }}>
                 <Grid item xs={3}>
                     <Avatar alt="profile photo" sx={{

@@ -35,14 +35,14 @@ export function OrderDetailsFreelancer({ bid, reFetch }: IOrderDetails) {
     return (
         <>
             <StyledTableRow>
-                <StyledTableCell sx={{ maxWidth: "150px", wordWrap: "break-word" }}>{bid ? bid.rpBidModel.bidId : ""}</StyledTableCell>
-                <StyledTableCell>{new Date(bid ? bid?.rpBidModel.bidAt : "").toLocaleString()}</StyledTableCell>
-                <StyledTableCell sx={{ maxWidth: "180px", wordWrap: "break-word" }} >{bid ? bid.rpBidModel.paperName : ""}</StyledTableCell>
-                <StyledTableCell sx={{ maxWidth: "180px", wordWrap: "break-word" }} ><Link href={encodeURI(bid ? bid.rpBidModel.paperLink.toString() : "")} rel="noopener noreferrer" target="_blank">{bid ? bid.rpBidModel.paperLink : ""}</Link></StyledTableCell>
-                <StyledTableCell sx={{ maxWidth: "175px", wordWrap: "break-word" }} >{bid ? bid.rpBidModel.paperDoi : ""}</StyledTableCell>
-                <StyledTableCell align="center">{String(bid ? bid.rpBidModel.numberOfCitation : "")}</StyledTableCell>
-                <StyledTableCell align="center">{String(bid ? bid.rpBidModel.bidAmount : "")}$</StyledTableCell>
-                <StyledTableCell>{new Date(bid ? bid?.rpBidModel.bidEndDate : "").toLocaleString()}</StyledTableCell>
+                <StyledTableCell sx={{ maxWidth: "150px", wordWrap: "break-word" }}>{bid ? bid.bidId : ""}</StyledTableCell>
+                <StyledTableCell>{new Date(bid ? bid?.bidAt : "").toLocaleString()}</StyledTableCell>
+                <StyledTableCell sx={{ maxWidth: "180px", wordWrap: "break-word" }} >{bid ? bid.paperName : ""}</StyledTableCell>
+                <StyledTableCell sx={{ maxWidth: "180px", wordWrap: "break-word" }} ><Link href={encodeURI(bid ? bid.paperLink.toString() : "")} rel="noopener noreferrer" target="_blank">{bid ? bid.paperLink : ""}</Link></StyledTableCell>
+                <StyledTableCell sx={{ maxWidth: "175px", wordWrap: "break-word" }} >{bid ? bid.paperDoi : ""}</StyledTableCell>
+                <StyledTableCell align="center">{String(bid ? bid.numberOfCitation : "")}</StyledTableCell>
+                <StyledTableCell align="center">{String(bid ? bid.bidAmount : "")}$</StyledTableCell>
+                <StyledTableCell>{new Date(bid ? bid?.bidEndDate : "").toLocaleString()}</StyledTableCell>
                 <StyledTableCell>{bid.bidStatus}</StyledTableCell>
                 <StyledTableCell></StyledTableCell>
             </StyledTableRow>

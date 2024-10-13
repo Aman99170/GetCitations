@@ -2,7 +2,7 @@ export const faqData: IFaqData[]= [
     {
         panel: '1',
         question: 'What is GetCitations?',
-        answer: 'We are a platform dedicated to the humble UXer, providing a space to learn, network and collaborate. Our goal is to support UXers throughout their career, providing opportunities for professional and personal growth. Our platform is inclusive and accessible for all levels of UXers to practise and master UX design.',
+        answer: 'GetCitations is a platform that connects researchers and freelancers to facilitate the process of obtaining citations for research papers. Researchers can post their papers and request citations, while freelancers can browse these papers, place bids, and provide citation services.',
     },
     {
         panel: '2',

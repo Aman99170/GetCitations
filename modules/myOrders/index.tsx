@@ -9,6 +9,7 @@ import { OrderDetails } from "../../components/orderDetails";
 import { freelancerColumnHeaders, researchersColumnHeaders } from "./type";
 import { SearchBoxFreelancer } from "../../components/searchBoxFreelancer";
 import { OrderDetailsFreelancer } from "../../components/orderDetailsFreelancer";
+import { FilterModalFreelancer } from "../../components/DialogBox/filterModalFreelancer";
 
 
 export function MyOrders() {
@@ -159,7 +160,8 @@ export function MyOrders() {
                 }}
             >
             </TablePagination>
-            {filterModalOpen && <FilterModal open={filterModalOpen} handleClose={() => setFilterModalOpen(false)} reFetch={getMyOrders} setPage={setPage} />}
+            {filterModalOpen && userType === "Researcher" && <FilterModal open={filterModalOpen} handleClose={() => setFilterModalOpen(false)} reFetch={getMyOrders} setPage={setPage} />}
+            {filterModalOpen && userType === "Freelancer" && <FilterModalFreelancer open={filterModalOpen} handleClose={() => setFilterModalOpen(false)} reFetch={getBids} setPage={setPage} />}
         </>
     )
 }
