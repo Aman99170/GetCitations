@@ -21,7 +21,7 @@ export function BidModal({ open, handleClose, allRP }: IBidModal) {
     const [isBidOver, setIsBidOver] = useState<boolean>(false)
     const lowestBid: IBid | undefined = useMemo(() => {
         let lowest: IBid
-        if (biddingDetails) {
+        if (biddingDetails!==undefined) {
             biddingDetails?.loggedInUser[0]?.bidAmount < biddingDetails?.someOneElseUser[0]?.bidAmount ?
                 lowest = biddingDetails.loggedInUser[0] :
                 lowest = biddingDetails.someOneElseUser[0]
@@ -29,7 +29,7 @@ export function BidModal({ open, handleClose, allRP }: IBidModal) {
         }
     }, [biddingDetails, allRP, biddingAmount])
     const isLowestBidUserLoggeUser = useMemo(() => {
-        if(lowestBid){
+        if(lowestBid!==undefined){
         if (lowestBid?.userDetails?._id === biddingDetails?.loggedInUser[0]?.userDetails._id)
             return true
         }
