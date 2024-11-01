@@ -29,8 +29,10 @@ export function BidModal({ open, handleClose, allRP }: IBidModal) {
         }
     }, [biddingDetails, allRP, biddingAmount])
     const isLowestBidUserLoggeUser = useMemo(() => {
+        if(lowestBid){
         if (lowestBid?.userDetails?._id === biddingDetails?.loggedInUser[0]?.userDetails._id)
             return true
+        }
         else
             return false
     }, [biddingDetails])
