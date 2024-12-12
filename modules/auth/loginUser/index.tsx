@@ -7,11 +7,24 @@ import AppleIcon from '@mui/icons-material/Apple';
 import {useForm} from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup"
 import * as yup from "yup"
-import { useCallback } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 
 export function LoginUser({userType}:{userType:String}){
-    const router = useRouter()
+    const router = useRouter() 
+
+    const storage = useMemo(() => {
+        if (typeof window !== 'undefined')
+            return (
+                localStorage.getItem('user')
+            )
+        return null
+    }, [])
+    useEffect(()=>{
+        if(storage){
+            router.push("/");
+        }
+    },[router,storage])
 
     const schema = yup.object().shape({
         email: yup
