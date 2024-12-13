@@ -79,7 +79,7 @@ export default function TopBar() {
           justifyContent: "space-between"
         }}>
 
-          <IconButton href="/">
+          <IconButton href="/?userType=${userType}">
             <Avatar src="/assets/GetCitations-logo.png" alt="GetCitations" sx={{ width: 120, height: 60 }} />
           </IconButton>
           <Stack direction={"row"} gap={"10px"}>
@@ -93,7 +93,7 @@ export default function TopBar() {
               },
             }}
               variant='text'
-              href='/'
+              href={`/?userType=${userType}`}
             >Home</Button>
             <Button sx={{
               color: "black",
