@@ -22,7 +22,7 @@ export function LoginUser({userType}:{userType:String}){
     }, [])
     useEffect(()=>{
         if(storage){
-            router.push("/");
+            router.push(`/?userType=${userType}`);
         }
     },[router,storage])
 
