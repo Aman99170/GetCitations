@@ -17,7 +17,7 @@ export default function PaymentPage() {
     }, []);
     useEffect(()=>{
         if(userType===null || userType!="Researcher"){
-            router.push("/");
+            router.push(`/?userType=${userType}`);
         }else{
             router.push(`/payment/${params.id}`)
         }

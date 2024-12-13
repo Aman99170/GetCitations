@@ -1,10 +1,9 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useOrderContext } from "../../context/OrderContext";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export function Order() {
-    const searchParams = useSearchParams()
     const router = useRouter()
     const [userType, setUserType] = useState<String | null>()
     useEffect(() => {
@@ -15,7 +14,7 @@ export function Order() {
     },[]);
     useEffect(()=>{
         if(userType===null || userType!="Researcher"){
-            router.push("/");
+            router.push(`/userType=${userType}`);
         }else{
             router.push(`/order?numofCitation=${numOfCitation}&rate=${rate}`)
         }
