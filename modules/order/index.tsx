@@ -1,7 +1,25 @@
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useOrderContext } from "../../context/OrderContext";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export function Order() {
+    const searchParams = useSearchParams()
+    const router = useRouter()
+    const [userType, setUserType] = useState<String | null>()
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const userType = localStorage.getItem('userType');
+            setUserType(userType);
+        }
+    },[]);
+    useEffect(()=>{
+        if(userType===null || userType!="Researcher"){
+            router.push("/");
+        }else{
+            router.push(`/order?numofCitation=${numOfCitation}&rate=${rate}`)
+        }
+    },[userType])
     
     const {handleChange,formData,numOfCitation,rate,handleSubmit} = useOrderContext()
     return (
