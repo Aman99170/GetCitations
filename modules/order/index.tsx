@@ -14,7 +14,7 @@ export function Order() {
     },[]);
     useEffect(()=>{
         if(userType===null || userType!="Researcher"){
-            router.push(`/userType=${userType}`);
+            router.push(`/?userType=${userType}`);
         }else{
             router.push(`/order?numofCitation=${numOfCitation}&rate=${rate}`)
         }

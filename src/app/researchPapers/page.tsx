@@ -15,7 +15,7 @@ export default function researchPapers() {
     }, []);
     useEffect(()=>{
         if(userType===null || userType!="Freelancer"){
-            router.push(`/userType=${userType}`);
+            router.push(`/?userType=${userType}`);
         }else{
             router.push("/researchPapers")
         }
