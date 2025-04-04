@@ -4,6 +4,7 @@ import { profiledata } from "./data";
 import { IProfileData, IUserInfo } from "./type";
 import { useAuthContext } from "../../context/AuthContext";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function ProfilePage() {
     const { userInfo } = useAuthContext()
@@ -15,6 +16,14 @@ export function ProfilePage() {
     const [userType,setUserType] = useState<String | null>();
     const [editedUserDetails, setEditedUserDetails] = useState<IUserInfo>({ firstName: "", lastName: "", email: "", mobileNumber: "" })
 
+    const router = useRouter()
+    const{isLoggedIn} = useAuthContext()
+    useEffect(()=>{
+            if(!isLoggedIn){
+                router.push(`/`);
+            }
+    },[isLoggedIn])
+    
     useEffect(() => {
         if (typeof window !== 'undefined') {
             const userType = localStorage.getItem('userType');

@@ -10,6 +10,8 @@ import { freelancerColumnHeaders, researchersColumnHeaders } from "./type";
 import { SearchBoxFreelancer } from "../../components/searchBoxFreelancer";
 import { OrderDetailsFreelancer } from "../../components/orderDetailsFreelancer";
 import { FilterModalFreelancer } from "../../components/DialogBox/filterModalFreelancer";
+import { useAuthContext } from "../../context/AuthContext";
+import { useRouter } from "next/navigation";
 
 
 export function MyOrders() {
@@ -20,6 +22,14 @@ export function MyOrders() {
     const { orders, getMyOrders, bids, getBids } = useMyOrders()
     const [userType, setUserType] = useState<String | null>()
     const [TableCells, setTableCells] = useState<String[]>([])
+
+    const router = useRouter()
+    const{isLoggedIn} = useAuthContext()
+    useEffect(()=>{
+            if(!isLoggedIn){
+                router.push(`/`);
+            }
+    },[isLoggedIn])
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
