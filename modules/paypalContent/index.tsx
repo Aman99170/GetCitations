@@ -4,9 +4,11 @@ import { PayPalButtons } from "@paypal/react-paypal-js";
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from "react";
 import { IOrder } from "../myOrders/type";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import { useRouter } from "next/navigation";
 
 export function PaypalContent({ orderDetails, setClientSideOrderDetails }: { orderDetails: IOrder, setClientSideOrderDetails: Dispatch<SetStateAction<IOrder>> }) {
     const { userInfo } = useAuthContext()
+    const router = useRouter()
 
     const updateOrders = useCallback(async (orderId: String, transactionStatus: String) => {
         try {
@@ -18,7 +20,12 @@ export function PaypalContent({ orderDetails, setClientSideOrderDetails }: { ord
                     'Content-Type': 'application/json',
                 },
             })
-            if (res.status === 200) {
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if (res.status === 200) {
                 const data = await res.json()
                 setClientSideOrderDetails(data.finalUpdatedOrder)
             }

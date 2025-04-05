@@ -58,7 +58,12 @@ export function AuthProvider({ children }: PropsWithChildren) {
                         Authorization: userType==="Researcher" ? `${storage}` : `Bearer ${storage}`,
                     },
                 })
-                if (res.status === 200) {
+                if(res.status === 401){
+                    alert('User session expired, logging out')
+                    router.push("/");
+                    localStorage.clear();
+                }
+                else if (res.status === 200) {
                     setUserInfo(await res.json())
                 }
             } catch (error) {

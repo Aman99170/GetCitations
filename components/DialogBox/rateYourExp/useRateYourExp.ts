@@ -1,5 +1,6 @@
 import { useCallback, useState } from "react"
 import { useAuthContext } from "../../../context/AuthContext"
+import { useRouter } from "next/navigation"
 
 export interface IReviewData {
     value: number | null
@@ -7,6 +8,7 @@ export interface IReviewData {
 }
 
 export const useRateYourExp = ()=>{
+    const router = useRouter()
     const { userInfo } = useAuthContext()
     const [ratingData, setRatingData] = useState<IReviewData>({
         value: 0,
@@ -21,7 +23,12 @@ export const useRateYourExp = ()=>{
                     'Content-Type': 'application/json',
                 }
             })
-            if (res.status === 200) {
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if (res.status === 200) {
                 const data = await res.json()
                 if (data !== null) {
                     setRatingData({
@@ -51,7 +58,12 @@ export const useRateYourExp = ()=>{
                     'Content-Type': 'application/json',
                 },
             })
-            if (res.status === 200) {
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if (res.status === 200) {
                 return true
             }
         } catch (err) {
@@ -68,7 +80,12 @@ export const useRateYourExp = ()=>{
                     'Content-Type': 'application/json',
                 }
             })
-            if(res.status===200){
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if(res.status===200){
                 return true
             }
         }catch (err) {

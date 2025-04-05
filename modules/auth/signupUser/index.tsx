@@ -78,8 +78,12 @@ export function SignUpUser({userType}:{userType:String}){
                 'Content-Type': 'application/json',
             },
         })
-
-        if(res.status === 200){
+        if(res.status === 401){
+            alert('User session expired, logging out')
+            router.push("/");
+            localStorage.clear();
+        }
+        else if(res.status === 200){
             router.replace("/login")
         }}
         catch(err){

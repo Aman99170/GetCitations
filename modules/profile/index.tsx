@@ -53,7 +53,12 @@ export function ProfilePage() {
                     
                 },
             })
-            if(res.status===200){
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if(res.status===200){
                 setIsEditable(false)
             }
         }catch(error){
@@ -80,6 +85,11 @@ export function ProfilePage() {
                     
                 },
             })
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
             const data = await res.json()
             if(res.status===200){
                 alert(data.message)

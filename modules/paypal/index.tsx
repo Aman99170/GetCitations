@@ -4,7 +4,7 @@ import { AuthProvider } from "../../context/AuthProvider";
 import { PaypalContent } from "../paypalContent";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { IOrder } from "../myOrders/type";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 
 export interface IOrderDetails {
     orderDetails: {
@@ -26,12 +26,18 @@ export function Paypal({ orderDetails }: IOrderDetails) {
     const [paypalClientId, setPaypalClientId] = useState<string>("")
     const [clientSideOrderDetails,setClientSideOrderDetails] = useState<IOrder>(orderDetails)
     const params = useParams()
+    const router = useRouter()
 
     useEffect(() => {
         const fetchRecentOrder = async() =>{
         try{
             const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/myRecentOrder/${params.id}`)
-            if(res.status===200){
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if(res.status===200){
               setClientSideOrderDetails(await res.json())
             }
           }catch(error){
@@ -51,7 +57,12 @@ export function Paypal({ orderDetails }: IOrderDetails) {
                     'Content-Type': 'application/json',
                 }
             })
-            if (res.status === 200) {
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if (res.status === 200) {
                 setPaypalClientId(await res.text())
             }
         } catch (error) {

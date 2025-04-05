@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from "react"
 import { IOrder } from "./type"
+import { useRouter } from "next/navigation"
 
 export const useResearchPapers = () => {
     const [allRPperPage, setAllRPperPage] = useState<IOrder[]>([])
@@ -7,6 +8,7 @@ export const useResearchPapers = () => {
     const [rowsPerPage,setRowsPerPage] = useState<number>(10)
     const lastItemRef = useRef(null)
     const isFirstFetch = useRef(true)
+    const router = useRouter()
     const loadMoreItems = () => {
         setTimeout(() => {
           setPage((prev) => prev + 1);
@@ -42,7 +44,12 @@ export const useResearchPapers = () => {
                     'Content-Type': 'application/json',
                 }
             })
-            if (res.status === 200) {
+            if(res.status === 401){
+              alert('User session expired, logging out')
+              router.push("/");
+              localStorage.clear();
+          }
+          else if (res.status === 200) {
                 setAllRPperPage(await res.json())
             }
         } catch (error) {

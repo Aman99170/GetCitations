@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from "react";
 import { IBidDetails, IOrder } from "./type";
 import { IformData } from "../../components/DialogBox/editOrder";
 import { useAuthContext } from "../../context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export const useMyOrders = ()=>{
     const storage = useMemo(() => {
@@ -14,10 +15,12 @@ export const useMyOrders = ()=>{
     const [orders, setOrders] = useState<IOrder[]>()
     const [bids,setBids] = useState<IBidDetails[]>()
     const {userInfo} = useAuthContext()
+    const router = useRouter()
 
     const getBids = useCallback(async(filters={})=>{
         try{
             const queryParams = new URLSearchParams(filters)
+            if(userInfo._id){
                 const resp = await fetch(`${process.env.NEXT_PUBLIC_API_URL_FREELANCER}/fetchAllBids/${userInfo._id}?${queryParams}`, {
                     method: 'GET',
                     headers: {
@@ -25,9 +28,15 @@ export const useMyOrders = ()=>{
                         'Content-Type': 'application/json',
                     }
                 })
-            if(resp.status===200){
+                if(resp.status === 401){
+                    alert("User session expired, logging out")
+                    router.push("/");
+                    localStorage.clear();
+                }
+                else if(resp.status===200){
                 setBids(await resp.json())
             }
+        }
         }catch (error) {
             console.error(error)
         }
@@ -43,8 +52,12 @@ export const useMyOrders = ()=>{
                         'Content-Type': 'application/json',
                     }
                 })
-
-            if (res.status === 200) {
+                if(res.status === 401){
+                    alert('User session expired, logging out')
+                    router.push("/");
+                    localStorage.clear();
+                }
+                else if (res.status === 200) {
                 setOrders(await res.json())
             }
         } catch (error) {
@@ -61,7 +74,12 @@ export const useMyOrders = ()=>{
                     'Content-Type': 'application/json',
                 },
             })
-            if(res.status===200){
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if(res.status===200){
                 handleClose()
             }
         }catch(error){
@@ -77,7 +95,12 @@ export const useMyOrders = ()=>{
                     'Content-Type': 'application/json',
                 },
             })
-            if(res.status===200){
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if(res.status===200){
                 handleClose()
             }
         }catch(error){

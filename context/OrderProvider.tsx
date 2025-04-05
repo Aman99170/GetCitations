@@ -44,7 +44,12 @@ export function OrderProvider ({children}:PropsWithChildren){
                     'Content-Type': 'application/json',
                 },
             })
-            if(res.status===200){
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if(res.status===200){
                 const data = await res.json()
                 router.replace(`/payment/${data._id}`)
             }

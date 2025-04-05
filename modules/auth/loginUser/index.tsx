@@ -66,8 +66,12 @@ export function LoginUser({userType}:{userType:String}){
                 'Content-Type': 'application/json',
             },
         })
-
-        if(res.status === 200){
+        if(res.status === 401){
+            alert('User session expired, logging out')
+            router.push("/");
+            localStorage.clear();
+        }
+        else if(res.status === 200){
             res= await res.json()
             const expirationTime = Date.now() + 3600 * 1000;
             localStorage.setItem("user",JSON.stringify(res))

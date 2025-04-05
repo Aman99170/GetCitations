@@ -2,9 +2,11 @@ import { useCallback, useEffect, useState } from "react"
 import { IOrder } from "../../../modules/researchPapers/type"
 import { IBidResponse, IUserDetails } from "./type";
 import { useAuthContext } from "../../../context/AuthContext";
+import { useRouter } from "next/navigation";
 
 export const useBidModal = () => {
 
+    const router = useRouter()
     const [biddingDetails, setBiddingDetails] = useState<IBidResponse>()
     const [winner,setWinner] = useState<IUserDetails>()
     const {userInfo}=useAuthContext()
@@ -46,7 +48,12 @@ export const useBidModal = () => {
                 body: JSON.stringify(payload)
 
             })
-            if (res.status === 200) {
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if (res.status === 200) {
                 return true
             }
         } catch (error) {
@@ -64,7 +71,12 @@ export const useBidModal = () => {
                     'Content-Type': 'application/json',
                 }
             })
-            if (res.status === 200) {
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if (res.status === 200) {
                 setBiddingDetails(await res.json())
             }
         } catch (error) {
@@ -81,7 +93,12 @@ export const useBidModal = () => {
                     'Content-Type': 'application/json',
                 }
             })
-            if (res.status === 200) {
+            if(res.status === 401){
+                alert('User session expired, logging out')
+                router.push("/");
+                localStorage.clear();
+            }
+            else if (res.status === 200) {
                 setWinner(await res.json())
             }
         }catch (error) {

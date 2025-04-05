@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAuthContext } from "../../context/AuthContext";
 import { CustomButton } from "./Button";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface IUserDetails {
   firstName: string;
@@ -24,6 +24,7 @@ interface IReview {
 }
 
 export function LandingPageResearcher() {
+  const router = useRouter()
   const { isLoggedIn, userInfo } = useAuthContext();
   const [reviewData, setReviewData] = useState<IReview[]>();
   const searchParams = useSearchParams()
@@ -41,7 +42,7 @@ export function LandingPageResearcher() {
     const BASE_URL = userType === "Researcher" ? process.env.NEXT_PUBLIC_API_URL : process.env.NEXT_PUBLIC_API_URL_FREELANCER
     try {
       {
-        isLoggedIn ?
+        isLoggedIn && userInfo._id ?
           res = await fetch(`${BASE_URL}/fetchReviewWithUserDetails/${userInfo._id}`, {
             method: 'GET',
             headers: {
@@ -58,7 +59,12 @@ export function LandingPageResearcher() {
             }
           })
       }
-      if (res.status === 200) {
+      if(res.status === 401){
+        alert('User session expired, logging out')
+        router.push("/");
+        localStorage.clear();
+    }
+    else if (res.status === 200) {
         setReviewData(await res.json())
       }
     } catch (err) {
@@ -137,11 +143,7 @@ export function LandingPageResearcher() {
               </Paper>
             </Grid>
           </Grid>
-          {isLoggedIn && userType === "Researcher" ? (
-            <Box paddingTop={"40px"} paddingLeft={"250px"}>
-              <Link href={"/"} color='black'>Get citations for your research articles.</Link>
-            </Box>
-          ) : !isLoggedIn ? (
+          {!isLoggedIn &&
             <Grid container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
               <Grid item xs={12} md={5}>
                 <Box
@@ -191,7 +193,7 @@ export function LandingPageResearcher() {
                 </Box>
               </Grid>
             </Grid>
-          ) : <></>}
+          }
 
           <Typography variant="h4" align="center" gutterBottom sx={{ mt: 5 }}>
             Testimonials
