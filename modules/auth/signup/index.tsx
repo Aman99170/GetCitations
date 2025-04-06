@@ -76,7 +76,7 @@ export function SignUp() {
         </Typography>
         <Grid container spacing={4} sx={{ mt: 4 }}>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 4,height:"100px" }}>
+            <Paper sx={{ p: 4,height:'60%' }}>
               <Typography variant="h6" gutterBottom>
                 1. Create an Account
               </Typography>
@@ -86,7 +86,7 @@ export function SignUp() {
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 4,height:"100px" }}>
+            <Paper sx={{ p: 4,height:"60%" }}>
               <Typography variant="h6" gutterBottom>
                 2. Find Your Match
               </Typography>
@@ -96,7 +96,7 @@ export function SignUp() {
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 4,height:"100px" }}>
+            <Paper sx={{ p: 4,height:"60%" }}>
               <Typography variant="h6" gutterBottom>
                 3. Start Collaborating
               </Typography>
@@ -106,7 +106,7 @@ export function SignUp() {
             </Paper>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Paper sx={{ p: 4,height:"100px" }}>
+            <Paper sx={{ p: 4,height:"60%" }}>
               <Typography variant="h6" gutterBottom>
                 4. Deliver and Grow
               </Typography>

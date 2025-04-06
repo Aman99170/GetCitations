@@ -69,56 +69,38 @@ export default function TopBar() {
 
   return (
     <>
-      <AppBar position='sticky' sx={{
-        backgroundColor: "white",
-        boxShadow: "none",
-        borderBottom: "1px solid #e0e0e0",
-        width: "100%",
-      }}>
-        <Toolbar sx={{
-          justifyContent: "space-between"
-        }}>
-
-          <IconButton href="/?userType=${userType}">
-            <Avatar src="/assets/GetCitations-logo.png" alt="GetCitations" sx={{ width: 120, height: 60 }} />
+      <AppBar
+        position="sticky"
+        sx={{
+          backgroundColor: "white",
+          boxShadow: "none",
+          borderBottom: "1px solid #e0e0e0",
+          width: "100%",
+        }}
+      >
+        <Toolbar
+          sx={{
+            justifyContent: "space-between",
+            flexWrap: "wrap", // Allows wrapping on smaller screens
+          }}
+        >
+          <IconButton href={`/?userType=${userType}`}>
+            <Avatar
+              src="/assets/GetCitations-logo.png"
+              alt="GetCitations"
+              sx={{ width: 120, height: 60 }}
+            />
           </IconButton>
-          <Stack direction={"row"} gap={"10px"}>
-
-            <Button sx={{
-              color: "black",
-              fontWeight: "bold",
-              textTransform: "none",
-              "&:hover": {
-                color: "#4CAF50",
-              },
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              alignItems: "center",
+              flexWrap: "wrap", // Allows wrapping on smaller screens
             }}
-              variant='text'
-              href={`/?userType=${userType}`}
-            >Home</Button>
-            <Button sx={{
-              color: "black",
-              fontWeight: "bold",
-              textTransform: "none",
-              "&:hover": {
-                color: "#4CAF50",
-              },
-            }}
-              variant='text'
-              href='/contact'
-            >Contact</Button>
-            <Button sx={{
-              color: "black",
-              fontWeight: "bold",
-              textTransform: "none",
-              "&:hover": {
-                color: "#4CAF50",
-              },
-            }}
-              variant='text'
-              href='/faq'
-            >Help</Button>
-            {isLoggedIn && userType === "Researcher" ?
-              <Button sx={{
+          >
+            <Button
+              sx={{
                 color: "black",
                 fontWeight: "bold",
                 textTransform: "none",
@@ -126,11 +108,42 @@ export default function TopBar() {
                   color: "#4CAF50",
                 },
               }}
-                variant='text'
-                href='/pricing'
-              >Pricing</Button>
-              : isLoggedIn && userType === "Freelancer" ?
-                <Button sx={{
+              variant="text"
+              href={`/?userType=${userType}`}
+            >
+              Home
+            </Button>
+            <Button
+              sx={{
+                color: "black",
+                fontWeight: "bold",
+                textTransform: "none",
+                "&:hover": {
+                  color: "#4CAF50",
+                },
+              }}
+              variant="text"
+              href="/contact"
+            >
+              Contact
+            </Button>
+            <Button
+              sx={{
+                color: "black",
+                fontWeight: "bold",
+                textTransform: "none",
+                "&:hover": {
+                  color: "#4CAF50",
+                },
+              }}
+              variant="text"
+              href="/faq"
+            >
+              Help
+            </Button>
+            {isLoggedIn && userType === "Researcher" ? (
+              <Button
+                sx={{
                   color: "black",
                   fontWeight: "bold",
                   textTransform: "none",
@@ -138,33 +151,54 @@ export default function TopBar() {
                     color: "#4CAF50",
                   },
                 }}
-                  variant='text'
-                  href='/researchPapers'
-                >Research Papers</Button>:<></>
-          }
-            {!isLoggedIn ?
+                variant="text"
+                href="/pricing"
+              >
+                Pricing
+              </Button>
+            ) : isLoggedIn && userType === "Freelancer" ? (
+              <Button
+                sx={{
+                  color: "black",
+                  fontWeight: "bold",
+                  textTransform: "none",
+                  "&:hover": {
+                    color: "#4CAF50",
+                  },
+                }}
+                variant="text"
+                href="/researchPapers"
+              >
+                Research Papers
+              </Button>
+            ) : null}
+            {!isLoggedIn ? (
               <>
-                <CustomButton href='/sign-up'>Sign-up</CustomButton>
-                <CustomButton href='/login'>Login</CustomButton>
-              </> :
+                <CustomButton href="/sign-up">Sign-up</CustomButton>
+                <CustomButton href="/login">Login</CustomButton>
+              </>
+            ) : (
               <>
                 <IconButton ref={anchorRef} onClick={handleToggle}>
                   <Avatar src="/assets/icons/logo.svg" />
                 </IconButton>
-                {open &&
+                {open && (
                   <VerticalMenuComponent
                     open={open}
                     setOpen={setOpen}
                     handleClose={handleClose}
                     anchorRef={anchorRef}
                     kebabOption={kebabOption}
-                  />}
+                  />
+                )}
                 <LogoutDialog
                   open={openLogoutDialog}
-                  handleClose={() => { setOpenLogoutDialog(false) }}
+                  handleClose={() => {
+                    setOpenLogoutDialog(false);
+                  }}
                 />
               </>
-            }
+            )}
           </Stack>
         </Toolbar>
       </AppBar>
